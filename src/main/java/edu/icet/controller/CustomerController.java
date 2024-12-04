@@ -5,8 +5,10 @@ import edu.icet.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/Customer")
+@RequestMapping("/customer")
 public class CustomerController {
     @Autowired
     private CustomerService service;
@@ -23,5 +25,14 @@ public class CustomerController {
     public boolean update(CustomerModel model){
         return service.update(model);
     }
-    
+
+    @GetMapping("/get-all")
+    public List<CustomerModel> getAll(){
+        return service.getAll();
+    }
+    @GetMapping("/search-by-name/")
+    public List<CustomerModel> searchByName(@RequestParam String name){
+        return service.searchByName(name);
+    }
+
 }

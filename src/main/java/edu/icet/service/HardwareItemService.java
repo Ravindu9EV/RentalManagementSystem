@@ -9,5 +9,6 @@ public interface HardwareItemService {
     HardwareItemModel search(int itemId);
     boolean update(HardwareItemModel model);
     boolean remove(int itemId);
+    List<HardwareItemModel> findByAvailability(boolean availability);
     List<HardwareItemModel> getAll();
 }

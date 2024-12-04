@@ -1,7 +1,6 @@
 package edu.icet.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -12,6 +11,8 @@ import lombok.*;
 @Entity
 public class HardwareItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name =" itemID")
     private Integer itemID;
     private String name;
     private Integer rentalPerDay;

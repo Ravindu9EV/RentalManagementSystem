@@ -19,6 +19,7 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     @Override
     public boolean add(HardwareItemModel hardwareItemModel) {
         if(hardwareItemModel.getItemID()!=null | hardwareItemModel.getName()!=null){
+
             return repository.save(mapper.map(hardwareItemModel, HardwareItem.class))!=null;
 
         }else{
@@ -55,6 +56,17 @@ public class HardWareItemServiceImpl implements HardwareItemService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<HardwareItemModel> findByAvailability(boolean availability) {
+        List<HardwareItemModel> models=new ArrayList<>();
+        for(HardwareItem entity: repository.findAll()){
+            if(entity.isAvailability()){
+                models.add(mapper.map(entity, HardwareItemModel.class));
+            }
+        }
+        return models;
     }
 
     @Override

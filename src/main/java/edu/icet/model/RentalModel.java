@@ -1,8 +1,10 @@
 package edu.icet.model;
 
+import edu.icet.entity.RentalDetails;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,4 +18,5 @@ public class RentalModel {
     private String dueDate;
     private boolean fine;
     private Double totalCost;
+    private List<RentalDetails> rentalDetails;
 }

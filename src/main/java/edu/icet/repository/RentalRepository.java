@@ -12,7 +12,6 @@ public interface RentalRepository extends JpaRepository<Rental,Integer> {
     List<Rental> findByReturnDate(String date);
     List<Rental> findByRentalDate(String date);
     List<Rental> findByDueDate(String date);
-    List<Rental> searchByRentalDate(String date);
 
 
 }
