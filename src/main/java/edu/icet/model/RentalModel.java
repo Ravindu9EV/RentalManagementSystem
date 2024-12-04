@@ -1,16 +1,15 @@
-package edu.icet.entity;
+package edu.icet.model;
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDate;
-@Entity
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Rental {
+@ToString
+public class RentalModel {
     private Integer rentID;
     private String  rentalDate;
     private String returnDate;
