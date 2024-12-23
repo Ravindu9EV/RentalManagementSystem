@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/item")
+@CrossOrigin
 public class HardwareItemController {
     @Autowired
     private HardwareItemService service;

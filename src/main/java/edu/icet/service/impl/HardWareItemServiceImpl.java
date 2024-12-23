@@ -2,7 +2,7 @@ package edu.icet.service.impl;
 
 import edu.icet.entity.HardwareItem;
 import edu.icet.model.HardwareItemModel;
-import edu.icet.repository.HardwareRepository;
+import edu.icet.repository.HardwareItemRepository;
 import edu.icet.service.HardwareItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class HardWareItemServiceImpl implements HardwareItemService {
-    private final HardwareRepository repository;
+    private final HardwareItemRepository repository;
     private final ModelMapper mapper;
     @Override
     public boolean add(HardwareItemModel hardwareItemModel) {

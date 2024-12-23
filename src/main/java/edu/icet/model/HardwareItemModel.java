@@ -1,6 +1,9 @@
 package edu.icet.model;
 
+import edu.icet.entity.RentalDetails;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -13,4 +16,6 @@ public class HardwareItemModel {
     private Integer rentalPerDay;
     private Integer finePerDay;
     private boolean availability;
+    //private List<RentalModel> rentalModelList;
+    //private List<RentalDetails> rentalDetails;
 }

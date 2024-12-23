@@ -6,7 +6,7 @@ import edu.icet.model.RentalModel;
 import java.util.List;
 
 public interface RentalService {
-    boolean add(RentalModel rentalModel);
+    RentalModel add(RentalModel rentalModel);
     RentalModel search(int rentID);
     boolean update(RentalModel rentalModel);
     List<RentalModel> searchByRentalDate(String date);

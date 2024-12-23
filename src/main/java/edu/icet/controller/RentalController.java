@@ -17,8 +17,8 @@ public class RentalController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
-    public boolean add(@RequestBody RentalModel model){
-        System.out.println(model);
+    public RentalModel add(@RequestBody RentalModel model){
+       // System.out.println(model);
         return service.add(model);
     }
     @GetMapping("/search-by-id/")

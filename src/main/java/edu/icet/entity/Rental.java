@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -12,16 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "rental")
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rentID")
+
     private Integer rentID;
     private String  rentalDate;
     private String returnDate;
     private String dueDate;
     private boolean fine;
     private Double totalCost;
-    @OneToMany
+//    @ManyToMany(mappedBy = "rentals")
+//    private List<HardwareItem> hardwareItems;
+    @OneToMany(mappedBy = "rental")
+    @ToString.Exclude
     private List<RentalDetails> rentalDetails;
 }

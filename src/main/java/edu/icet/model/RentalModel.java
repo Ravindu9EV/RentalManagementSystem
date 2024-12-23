@@ -1,5 +1,6 @@
 package edu.icet.model;
 
+
 import edu.icet.entity.RentalDetails;
 import lombok.*;
 
@@ -18,5 +19,6 @@ public class RentalModel {
     private String dueDate;
     private boolean fine;
     private Double totalCost;
-    private List<RentalDetails> rentalDetails;
+    //private List<HardwareItemModel> hardwareItemModels;
+    private List<RentalDetailModel> rentalDetails;
 }
