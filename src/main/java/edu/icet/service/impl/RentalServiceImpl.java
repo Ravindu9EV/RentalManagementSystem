@@ -56,46 +56,49 @@ public class RentalServiceImpl implements RentalService {
         Transaction transaction=null;
 
         try{
-            session=sessionFactory.openSession();
-            transaction=session.beginTransaction();
+            if(!rentalModel.getRentalDetails().isEmpty() & !rentalModel.getRentalDate().isEmpty() & !rentalModel.getReturnDate().isEmpty() & !rentalModel.getDueDate().isEmpty() & rentalModel.getTotalCost()>0) {
+                session = sessionFactory.openSession();
+                transaction = session.beginTransaction();
 
-            //List<RentalDetails> rentalDetailsList=new ArrayList<>();
-            Rental rental=mapper.map(rentalModel, Rental.class);
-           rental= repository.save(rental);
-            System.out.println(rental);
-            List<RentalDetails> rentalDetails=new ArrayList<>();
-            int count=0;
-            List<RentalDetails> list=add(rentalModel.getRentalDetails());
-            for(RentalDetails detail:list){
-               // Optional<HardwareItem> item=hardwareItemRepository.findById(detail.getHardwareItem().getItemID());
-                if (detail!=null& detail.getHardwareItem()!=null){
-                    RentalDetails savedDetail=mapper.map(detail,RentalDetails.class);
-                    savedDetail.setRental(rental);
-                    List<RentalDetails> details=new ArrayList<>();
+                //List<RentalDetails> rentalDetailsList=new ArrayList<>();
+                Rental rental = mapper.map(rentalModel, Rental.class);
+                rental = repository.save(rental);
+                System.out.println(rental);
+                List<RentalDetails> rentalDetails = new ArrayList<>();
+                int count = 0;
+                List<RentalDetails> list = add(rentalModel.getRentalDetails());
+                for (RentalDetails detail : list) {
+                    // Optional<HardwareItem> item=hardwareItemRepository.findById(detail.getHardwareItem().getItemID());
+                    if (detail != null & detail.getHardwareItem() != null) {
+                        RentalDetails savedDetail = mapper.map(detail, RentalDetails.class);
+                        savedDetail.setRental(rental);
+                        List<RentalDetails> details = new ArrayList<>();
 
-                    System.out.println("saved: "+savedDetail);
-                           //savedDetail=rentalDetailsRepository.save(savedDetail);
-                          // savedDetail= (RentalDetails) session.save(savedDetail);
+                        System.out.println("saved: " + savedDetail);
+                        //savedDetail=rentalDetailsRepository.save(savedDetail);
+                        // savedDetail= (RentalDetails) session.save(savedDetail);
 
-                    //session.save(savedDetail);
-                    savedDetail=rentalDetailsRepository.save(savedDetail);
-                    rentalDetails.add(savedDetail);
-                    System.out.println(savedDetail);
-                    System.out.println();
+                        //session.save(savedDetail);
+                        savedDetail = rentalDetailsRepository.save(savedDetail);
+                        rentalDetails.add(savedDetail);
+                        System.out.println(savedDetail);
+                        System.out.println();
 
-                    savedDetail=null;
+                        savedDetail = null;
+                    }
                 }
-            }
-            rental.setRentalDetails(rentalDetails);
-            if(rentalDetails.size()==rentalModel.getRentalDetails().size()){
+                rental.setRentalDetails(rentalDetails);
+                if (rentalDetails.size() == rentalModel.getRentalDetails().size()) {
 
-                session.update(rental);
+                    session.update(rental);
 //                platformTransactionManager.commit(status);
-                transaction.commit();
-                return mapper.map(rental,RentalModel.class);
+                   // transaction.commit();
+                    return mapper.map(rental, RentalModel.class);
+                }
+
+            }else {
+                return null;
             }
-
-
 
 
 

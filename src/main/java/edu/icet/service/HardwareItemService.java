@@ -7,7 +7,7 @@ import java.util.List;
 public interface HardwareItemService {
     boolean add(HardwareItemModel hardwareItemModel);
     HardwareItemModel search(int itemId);
-    boolean update(HardwareItemModel model);
+    HardwareItemModel update(HardwareItemModel model);
     boolean remove(int itemId);
     List<HardwareItemModel> findByAvailability(boolean availability);
     List<HardwareItemModel> getAll();
