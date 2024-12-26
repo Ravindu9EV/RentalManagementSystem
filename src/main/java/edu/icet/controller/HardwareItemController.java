@@ -21,13 +21,16 @@ public class HardwareItemController {
         return service.add(model);
     }
     @GetMapping("/search-by-id/")
-    public HardwareItemModel search(@RequestParam int itemId){
-        return service.search(itemId);
+    public HardwareItemModel search(@RequestParam int itemID){
+        return service.search(itemID);
     }
 
     @PutMapping("/update")
-    public boolean update(HardwareItemModel model){
-        return service.update(model);
+    public HardwareItemModel update(@RequestBody HardwareItemModel model){
+        System.out.println("bef"+model);
+        HardwareItemModel item=service.update(model);
+        System.out.println(item);
+        return item;
     }
 
     @GetMapping("/get-all")
@@ -37,5 +40,9 @@ public class HardwareItemController {
     @GetMapping("/search-by-name/")
     public List<HardwareItemModel> searchByAvailability(@RequestParam boolean available){
         return service.findByAvailability(available);
+    }
+    @DeleteMapping("/delete-by-id/")
+    public boolean delete(@RequestParam int itemID){
+        return service.remove(itemID);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rental")
+@CrossOrigin
 public class RentalController {
     @Autowired
     private RentalService service;
@@ -18,7 +19,8 @@ public class RentalController {
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
     public RentalModel add(@RequestBody RentalModel model){
-       // System.out.println(model);
+        System.out.println(model);
+        model.setRentID(null);
         return service.add(model);
     }
     @GetMapping("/search-by-id/")

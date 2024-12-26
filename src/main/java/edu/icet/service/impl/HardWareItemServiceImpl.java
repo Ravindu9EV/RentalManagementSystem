@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +19,13 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     private final ModelMapper mapper;
     @Override
     public boolean add(HardwareItemModel hardwareItemModel) {
-        if(hardwareItemModel.getItemID()!=null | hardwareItemModel.getName()!=null){
+        if(hardwareItemModel!=null && hardwareItemModel.getName() != null) {
 
+            hardwareItemModel.setItemID(null);
             return repository.save(mapper.map(hardwareItemModel, HardwareItem.class))!=null;
 
-        }else{
+
+        }else {
             return false;
         }
     }
@@ -30,7 +33,7 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     @Override
     public HardwareItemModel search(int itemId) {
         if(itemId>0){
-            HardwareItem entity=repository.findById(itemId).get();
+            Optional<HardwareItem> entity=repository.findById(itemId);
 
             return mapper.map(entity,HardwareItemModel.class);
         }
@@ -38,13 +41,17 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     }
 
     @Override
-    public boolean update(HardwareItemModel model) {
+    public HardwareItemModel update(HardwareItemModel model) {
         try{
-            HardwareItem entity=mapper.map(model, HardwareItem.class);
-            repository.save(entity);
-            return true;
+            System.out.println(model.getItemID());
+            HardwareItemModel itemModel=search(model.getItemID());
+            if(itemModel!=null){
+                repository.save(mapper.map(model,HardwareItem.class));
+            }
+
+            return model;
         }catch (Exception e){
-            return false;
+            return null;
         }
 
     }
