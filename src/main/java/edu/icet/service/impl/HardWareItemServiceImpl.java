@@ -18,8 +18,8 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     private final ModelMapper mapper;
     @Override
     public boolean add(HardwareItemModel hardwareItemModel) {
-        if(hardwareItemModel.getItemID()!=null | hardwareItemModel.getName()!=null){
-
+        if(hardwareItemModel.getName()!=null){
+            hardwareItemModel.setItemID(null);
             return repository.save(mapper.map(hardwareItemModel, HardwareItem.class))!=null;
 
         }else{
@@ -38,13 +38,13 @@ public class HardWareItemServiceImpl implements HardwareItemService {
     }
 
     @Override
-    public boolean update(HardwareItemModel model) {
+    public HardwareItemModel update(HardwareItemModel model) {
         try{
             HardwareItem entity=mapper.map(model, HardwareItem.class);
             repository.save(entity);
-            return true;
+            return model;
         }catch (Exception e){
-            return false;
+            return null;
         }
 
     }
