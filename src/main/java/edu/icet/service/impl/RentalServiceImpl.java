@@ -45,60 +45,63 @@ public class RentalServiceImpl implements RentalService {
     @Override
     @Transactional
     public RentalModel add(RentalModel rentalModel) {
-
+//        if(rentalModel!=null){
+//            repository.save(mapper.map(rentalModel, Rental.class));
+//            return true;
+//        }
+//        return false;
         DefaultTransactionDefinition deft=new DefaultTransactionDefinition();
         TransactionStatus status=platformTransactionManager.getTransaction(deft);
         Session session=null;
         Transaction transaction=null;
 
         try{
-            if(!rentalModel.getRentalDetails().isEmpty() && !rentalModel.getRentalDate().isEmpty() && !rentalModel.getReturnDate().isEmpty() && !rentalModel.getDueDate().isEmpty() && rentalModel.getTotalCost()>0) {
-                session = sessionFactory.openSession();
-                transaction = session.beginTransaction();
+            session=sessionFactory.openSession();
+            transaction=session.beginTransaction();
 
+            //List<RentalDetails> rentalDetailsList=new ArrayList<>();
+            Rental rental=mapper.map(rentalModel, Rental.class);
+           rental= repository.save(rental);
+            System.out.println(rental);
+            List<RentalDetails> rentalDetails=new ArrayList<>();
+            int count=0;
+            List<RentalDetails> list=add(rentalModel.getRentalDetails());
+            for(RentalDetails detail:list){
+               // Optional<HardwareItem> item=hardwareItemRepository.findById(detail.getHardwareItem().getItemID());
+                if (detail!=null& detail.getHardwareItem()!=null){
+                    RentalDetails savedDetail=mapper.map(detail,RentalDetails.class);
+                    savedDetail.setRental(rental);
+                    List<RentalDetails> details=new ArrayList<>();
 
-                Rental rental = mapper.map(rentalModel, Rental.class);
-                rental = repository.save(rental);
-                System.out.println(rental);
-                List<RentalDetails> rentalDetails = new ArrayList<>();
-                int count = 0;
-                List<RentalDetails> list = add(rentalModel.getRentalDetails());
-                for (RentalDetails detail : list) {
+                    System.out.println("saved: "+savedDetail);
+                           //savedDetail=rentalDetailsRepository.save(savedDetail);
+                          // savedDetail= (RentalDetails) session.save(savedDetail);
 
-                    if (detail != null && detail.getHardwareItem() != null) {
-                        RentalDetails savedDetail = mapper.map(detail, RentalDetails.class);
-                        savedDetail.setRental(rental);
-                        List<RentalDetails> details = new ArrayList<>();
+                    //session.save(savedDetail);
+                    savedDetail=rentalDetailsRepository.save(savedDetail);
+                    rentalDetails.add(savedDetail);
+                    System.out.println(savedDetail);
+                    System.out.println();
 
-                        System.out.println("saved: " + savedDetail);
-
-
-                        savedDetail = rentalDetailsRepository.save(savedDetail);
-                        rentalDetails.add(savedDetail);
-                        System.out.println(savedDetail);
-                        System.out.println();
-
-                        savedDetail = null;
-                    }
+                    savedDetail=null;
                 }
-                rental.setRentalDetails(rentalDetails);
-                if (rentalDetails.size() == rentalModel.getRentalDetails().size()) {
-
-                    session.update(rental);
-//                platformTransactionManager.commit(status);
-                   // transaction.commit();
-                    return mapper.map(rental, RentalModel.class);
-                }
-
-            }else {
-                return null;
             }
+            rental.setRentalDetails(rentalDetails);
+            if(rentalDetails.size()==rentalModel.getRentalDetails().size()){
+
+                session.update(rental);
+//                platformTransactionManager.commit(status);
+                transaction.commit();
+                return mapper.map(rental,RentalModel.class);
+            }
+
+
 
 
 
         }catch (Exception e){
             log.info(e.toString());
-
+            //platformTransactionManager.rollback(status);
             transaction.rollback();
         }finally {
             session.close();
@@ -115,7 +118,7 @@ public class RentalServiceImpl implements RentalService {
                 Optional<HardwareItem> item=hardwareItemRepository.findById(model.getItemId());
                 RentalDetails rentalDetail=mapper.map(model,RentalDetails.class);
                 System.out.println(item);
-                if(item.isPresent() && item.get().isAvailability()){
+                if(item.get().isAvailability()){
                     rentalDetail.setHardwareItem(item.get());
                     System.out.println(rentalDetail);
                     rentalDetails.add(rentalDetail);
@@ -127,6 +130,52 @@ public class RentalServiceImpl implements RentalService {
         }
         return rentalDetails;
     }
+//    @Override
+//
+//
+//    public boolean add(RentalModel rentalModel) {
+//        DefaultTransactionDefinition deft=new DefaultTransactionDefinition();
+//        TransactionStatus status=platformTransactionManager.getTransaction(deft);
+//        try {
+//            if(rentalModel.getRentalDate()!=null && rentalModel.getReturnDate()!=null && rentalModel.getDueDate()!=null && rentalModel.getTotalCost()!=null){
+//                Rental rental=mapper.map(rentalModel, Rental.class);
+//
+//                List<RentalDetails> details=new ArrayList<>();
+//                boolean isDetailSaved=false;
+//                boolean isRentalSaved=false;
+//                rental=repository.save(rental);
+//                System.out.println(rental);
+//                isRentalSaved=true;
+//                for(RentalDetails detail:rental.getRentalDetails()){
+//
+//                    if(detail!=null){
+//                        detail.setId(new RentalDetailsKey(rental.getRentID(),detail.getItemID()));
+//                        System.out.println(rental.getRentID());
+//                        detail.setRentID(rental.getRentID());
+//                        System.out.println(detail.getRentID());
+//                        detail=rentalDetailsRepository.save(detail);
+//                        details.add(detail);
+//                        isDetailSaved=true;
+//                    }
+//                }
+//                if(isDetailSaved & isRentalSaved){
+//                    rental.setRentalDetails(details);
+//
+//                    platformTransactionManager.commit(status);
+//                    return true;
+//                }else {
+//                    return false;}
+//
+//
+//            }else {
+//                return false;
+//            }
+//        }catch (Exception e){
+//            System.out.println(e);
+//            return false;
+//        }
+//
+//    }
 
     @Override
     public RentalModel search(int rentID) {
